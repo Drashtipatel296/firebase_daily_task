@@ -1,99 +1,95 @@
 import 'package:chat/controller/auth_controller.dart';
-import 'package:chat/view/signup_screen.dart';
+import 'package:chat/view/auth_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     var controller = Get.put(AuthController());
-
     return Container(
       height: double.infinity,
       width: double.infinity,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: AssetImage('assets/login.png'),
+          image: AssetImage('assets/register.png'),
         ),
       ),
       child: Scaffold(
+        appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           child: Stack(
             children: [
               Container(
-                padding: const EdgeInsets.only(left: 40, top: 180),
-                child: const Text(
-                  'Welcome\nBack',
-                  style: TextStyle(fontSize: 40, color: Colors.white, fontWeight: FontWeight.bold),
+                padding: EdgeInsets.only(left: 40,top: 30),
+                child: Text(
+                  'Create\nAccount',
+                  style: TextStyle(fontSize: 40, color: Colors.white,fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
-                padding: const EdgeInsets.only(top: 460, left: 35, right: 35),
+                padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3, left: 30, right: 30),
                 child: Column(
                   children: [
                     TextField(
                       decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade100,
-                        labelText: 'Email',
-                        hintText: 'Email',
-                        hintStyle: const TextStyle(fontSize: 14),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        hintText: 'Name',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.black, width: 2),
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        hintText: 'Email',
+                        border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       controller: controller.txtEmail,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 30,
                     ),
                     TextField(
                       obscureText: true,
                       decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade100,
-                        labelText: 'Password',
-                        hintText: 'Password',
-                        hintStyle: const TextStyle(fontSize: 14),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.black, width: 2),
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        hintText: 'Password',
+                        border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       controller: controller.txtPassword,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 205),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Forgot Password',
-                          style: TextStyle(
-                              fontSize: 14,
-                              decoration: TextDecoration.underline,
-                              color: Color(0xff4c505b)),
-                        ),
-                      ),
-                    ),
                     const SizedBox(
-                      height: 130,
+                      height: 150,
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.signIn(controller.txtEmail.text, controller.txtPassword.text);
+                        controller.signUpUser(controller.txtEmail.text, controller.txtPassword.text);
                       },
                       child: Container(
                         height: 55,
@@ -104,7 +100,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         alignment: Alignment.center,
                         child: const Text(
-                          'Login',
+                          'Sign Up',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -120,14 +116,14 @@ class LoginScreen extends StatelessWidget {
                           'Don\'t have an account? ',
                           style: TextStyle(
                               fontSize: 14,
-                              color: Colors.grey),
+                              color: Colors.black),
                         ),
                         GestureDetector(
                           onTap: () {
-                            Get.to(const RegisterPage());
+                            Get.to(const LoginScreen());
                           },
                           child: const Text(
-                            'Sign Up',
+                            'Login',
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
