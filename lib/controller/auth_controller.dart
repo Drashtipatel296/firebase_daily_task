@@ -1,4 +1,5 @@
 import 'package:chat/firebase_services/auth_services.dart';
+import 'package:chat/firebase_services/google_sign_in_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,19 @@ import '../view/home_screen.dart';
 class AuthController extends GetxController{
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
+
+  RxString email = ''.obs;
+  RxString name = ''.obs;
+  RxString url = ''.obs;
+
+  void getUserDetails(){
+    User? user = GoogleSignInServices.googleSignInServices.currentUser();
+    if (user != null) {
+      email.value = user.email!;
+      url.value = user.photoURL!;
+      name.value = user.displayName!;
+    }
+  }
 
   Future<void> signUpUser(String email, String password) async {
     try{
@@ -63,5 +77,10 @@ class AuthController extends GetxController{
         colorText: Colors.white,
       );
     }
+  }
+
+  void emailLogOut(){
+    AuthServices.authServices.signOutMethod();
+    GoogleSignInServices.googleSignInServices.emailLogOut();
   }
 }

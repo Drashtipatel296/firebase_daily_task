@@ -1,7 +1,12 @@
 import 'package:chat/controller/auth_controller.dart';
+import 'package:chat/firebase_services/google_sign_in_services.dart';
 import 'package:chat/view/auth_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:sign_in_button/sign_in_button.dart';
+
+import 'home_screen.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -29,14 +34,20 @@ class RegisterPage extends StatelessWidget {
           child: Stack(
             children: [
               Container(
-                padding: EdgeInsets.only(left: 40,top: 30),
+                padding: EdgeInsets.only(left: 40, top: 30),
                 child: Text(
                   'Create\nAccount',
-                  style: TextStyle(fontSize: 40, color: Colors.white,fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3, left: 30, right: 30),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 3,
+                    left: 30,
+                    right: 30),
                 child: Column(
                   children: [
                     TextField(
@@ -85,11 +96,25 @@ class RegisterPage extends StatelessWidget {
                       controller: controller.txtPassword,
                     ),
                     const SizedBox(
-                      height: 150,
+                      height: 100,
+                    ),
+                    SignInButton(
+                        padding: EdgeInsets.symmetric(horizontal: 70),
+                        Buttons.google, onPressed: () async {
+                      String status = await GoogleSignInServices.googleSignInServices.signWithGoogle();
+                      Fluttertoast.showToast(msg: status);
+                      if (status == 'Success') {
+                        Get.to(const HomeScreen());
+                        controller.getUserDetails();
+                      }
+                    }),
+                    SizedBox(
+                      height: 20,
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.signUpUser(controller.txtEmail.text, controller.txtPassword.text);
+                        controller.signUpUser(controller.txtEmail.text,
+                            controller.txtPassword.text);
                       },
                       child: Container(
                         height: 55,
@@ -114,9 +139,7 @@ class RegisterPage extends StatelessWidget {
                       children: [
                         const Text(
                           'Don\'t have an account? ',
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black),
+                          style: TextStyle(fontSize: 14, color: Colors.black),
                         ),
                         GestureDetector(
                           onTap: () {

@@ -3,6 +3,7 @@ import 'package:chat/view/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -89,8 +90,14 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 130,
+                      height: 100,
                     ),
+                    SignInButton(
+                        padding: EdgeInsets.symmetric(horizontal: 70),
+                        Buttons.google, onPressed:
+                        (){}
+                    ),
+                    SizedBox(height: 20,),
                     GestureDetector(
                       onTap: () {
                         controller.signIn(controller.txtEmail.text, controller.txtPassword.text);

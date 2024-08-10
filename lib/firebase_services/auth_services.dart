@@ -9,7 +9,7 @@ class AuthServices {
   Future<void> createAccount(String email, String password) async {
     UserCredential userCredential = await firebaseAuth
         .createUserWithEmailAndPassword(email: email, password: password);
-    print(userCredential.user!.email);
+    print("${userCredential.user!.email}--------------------------------------------------------");
   }
 
   Future<User?> signIn(String email, String password) async {
