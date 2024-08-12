@@ -70,10 +70,8 @@ class AuthController extends GetxController {
       User? user = await AuthServices.authServices.Signin(email, password);
       if(user!=null)
       {
-
-
         Get.to(const HomeScreen());
-        getUserDetails();
+        // getUserDetails();
       }
       else{
         Get.snackbar('Login Failed', 'Incorrect email or password.',

@@ -6,15 +6,13 @@ class AuthServices {
   static AuthServices authServices = AuthServices();
 
   Future<void> createAccount(String email, String password) async {
-    UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-        email: email, password: password);
+    UserCredential userCredential = await auth.createUserWithEmailAndPassword(email: email, password: password);
     print(userCredential.user!.email);
   }
 
   Future<User?> Signin(String email, String password) async {
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
       return userCredential.user;
     } catch (e) {
       print(e);
@@ -22,7 +20,7 @@ class AuthServices {
     }
   }
 
-  Future<bool> checkEmail(String email,) async {
+  Future<bool> checkEmail(String email) async {
     try {
       List<String> signIn = await auth.fetchSignInMethodsForEmail(email);
       return signIn.isNotEmpty;

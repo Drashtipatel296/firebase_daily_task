@@ -1,4 +1,3 @@
-import 'package:chat/controller/auth_controller.dart';
 import 'package:chat/firebase_services/google_sign_in_services.dart';
 import 'package:chat/view/home_screen.dart';
 import 'package:chat/view/signup_screen.dart';
