@@ -1,17 +1,27 @@
-import 'package:chat/firebase_services/auth_services.dart';
-import 'package:chat/firebase_services/google_sign_in_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../firebase_services/auth_services.dart';
+import '../firebase_services/google_sign_in_services.dart';
 import '../view/home_screen.dart';
 
-class AuthController extends GetxController{
+class AuthController extends GetxController {
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
 
   RxString email = ''.obs;
   RxString name = ''.obs;
   RxString url = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    try {
+      getUserDetails();
+    } catch (e) {
+      print('Error initializing user details: $e');
+    }
+  }
 
   void getUserDetails(){
     User? user = GoogleSignInServices.googleSignInServices.currentUser();
@@ -22,30 +32,30 @@ class AuthController extends GetxController{
     }
   }
 
-  Future<void> signUpUser(String email, String password) async {
-    try{
-      bool emailExists = await AuthServices.authServices.checkEmail(email);
-      if(emailExists){
-        Get.snackbar(
-          'Sign Up Failed',
+  Future<void> signup(String email, String password) async {
+    try {
+      bool emails = await AuthServices.authServices.checkEmail(email);
+      if (emails) {
+        Get.snackbar('Sign Up Failed',
           'Email already in use. Please use a different email.',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
-      }else{
-        AuthServices.authServices.createAccount(email, password);
-        Get.snackbar(
-          'Sign Up',
-          'Sign Up Successfully',
+
+      }
+      else{
+        await AuthServices.authServices.createAccount(email, password);
+        Get.snackbar('Sign Up', 'Sign Up Successfully',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
       }
-    }catch (e) {
-      Get.snackbar(
-        'Sign Up Failed',
+
+    }catch(e)
+    {
+      Get.snackbar('Sign Up Failed',
         e.toString(),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
@@ -53,34 +63,31 @@ class AuthController extends GetxController{
       );
     }
   }
-
-  Future<void> signIn(String email, String password) async {
-    try {
-      User? user = await AuthServices.authServices.signIn(email, password);
-      if (user != null) {
+  Future<void>signIn(String email,String password)
+  async {
+    try{
+      User? user = await AuthServices.authServices.Signin(email, password);
+      if(user!=null)
+      {
         Get.to(const HomeScreen());
-      } else {
-        Get.snackbar(
-          'Login Failed',
-          'Incorrect email or password.',
+      }
+      else{
+        Get.snackbar('Login Failed', 'Incorrect email or password.',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
       }
-    } catch (e) {
-      Get.snackbar(
-        'Login Failed',
-        e.toString(),
+    }catch(e){
+      Get.snackbar('Login Failed', e.toString(),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
     }
   }
-
   void emailLogOut(){
-    AuthServices.authServices.signOutMethod();
+    AuthServices.authServices.signout();
     GoogleSignInServices.googleSignInServices.emailLogOut();
   }
 }

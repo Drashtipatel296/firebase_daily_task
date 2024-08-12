@@ -1,9 +1,13 @@
 import 'package:chat/controller/auth_controller.dart';
+import 'package:chat/firebase_services/auth_services.dart';
 import 'package:chat/view/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:sign_in_button/sign_in_button.dart';
+import '../firebase_services/google_sign_in_services.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -93,15 +97,19 @@ class LoginScreen extends StatelessWidget {
                       height: 100,
                     ),
                     SignInButton(
-                        padding: EdgeInsets.symmetric(horizontal: 70),
-                        Buttons.google, onPressed:
-                        (){}
-                    ),
-                    SizedBox(height: 20,),
+                        padding: const EdgeInsets.symmetric(horizontal: 70),
+                        Buttons.google, onPressed: () async {
+                      String status = await GoogleSignInServices.googleSignInServices.signWithGoogle();
+                      Fluttertoast.showToast(msg: status);
+                      if (status == 'Success') {
+                        controller.getUserDetails();
+                        Get.to(const HomeScreen());
+                      }
+                    }),
+                    const SizedBox(height: 20,),
                     GestureDetector(
                       onTap: () {
-                        controller.signIn(controller.txtEmail.text, controller.txtPassword.text);
-                      },
+                        controller.signIn(controller.txtEmail.text, controller.txtPassword.text);},
                       child: Container(
                         height: 55,
                         width: double.infinity,
@@ -131,6 +139,8 @@ class LoginScreen extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
+                            controller.txtEmail.clear();
+                            controller.txtPassword.clear();
                             Get.to(const RegisterPage());
                           },
                           child: const Text(

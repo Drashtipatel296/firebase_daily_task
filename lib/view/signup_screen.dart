@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:sign_in_button/sign_in_button.dart';
-
 import 'home_screen.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -99,7 +98,7 @@ class RegisterPage extends StatelessWidget {
                       height: 100,
                     ),
                     SignInButton(
-                        padding: EdgeInsets.symmetric(horizontal: 70),
+                        padding: const EdgeInsets.symmetric(horizontal: 70),
                         Buttons.google, onPressed: () async {
                       String status = await GoogleSignInServices.googleSignInServices.signWithGoogle();
                       Fluttertoast.showToast(msg: status);
@@ -113,8 +112,8 @@ class RegisterPage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.signUpUser(controller.txtEmail.text,
-                            controller.txtPassword.text);
+                        controller.signup(
+                            controller.txtEmail.text, controller.txtPassword.text);
                       },
                       child: Container(
                         height: 55,
@@ -143,6 +142,8 @@ class RegisterPage extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
+                            controller.txtEmail.clear();
+                            controller.txtPassword.clear();
                             Get.to(const LoginScreen());
                           },
                           child: const Text(
@@ -151,7 +152,8 @@ class RegisterPage extends StatelessWidget {
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
-                                color: Color(0xff4c505b)),
+                                color: Color(0xff4c505b),
+                            ),
                           ),
                         ),
                       ],

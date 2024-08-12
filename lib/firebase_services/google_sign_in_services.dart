@@ -8,7 +8,7 @@ class GoogleSignInServices{
   static GoogleSignInServices googleSignInServices = GoogleSignInServices._();
   GoogleSignInServices._();
 
-  AuthController authController = Get.find();
+  AuthController authController = Get.put(AuthController());
 
   GoogleSignIn googleSignIn = GoogleSignIn();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -30,7 +30,7 @@ class GoogleSignInServices{
     }
   }
 
-  void emailLogOut(){
+  void emailLogOut() async {
     googleSignIn.signOut();
     firebaseAuth.signOut();
   }
