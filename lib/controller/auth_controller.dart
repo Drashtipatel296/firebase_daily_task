@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,11 +17,7 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    try {
       getUserDetails();
-    } catch (e) {
-      print('Error initializing user details: $e');
-    }
   }
 
   void getUserDetails(){
@@ -29,6 +26,10 @@ class AuthController extends GetxController {
       email.value = user.email!;
       url.value = user.photoURL!;
       name.value = user.displayName!;
+      log('-----------------------------------');
+      log(email.value);
+      log(url.value);
+      log(name.value);
     }
   }
 
@@ -63,13 +64,16 @@ class AuthController extends GetxController {
       );
     }
   }
-  Future<void>signIn(String email,String password)
+  Future<void> signIn(String email,String password)
   async {
     try{
       User? user = await AuthServices.authServices.Signin(email, password);
       if(user!=null)
       {
+
+
         Get.to(const HomeScreen());
+        getUserDetails();
       }
       else{
         Get.snackbar('Login Failed', 'Incorrect email or password.',
@@ -86,6 +90,7 @@ class AuthController extends GetxController {
       );
     }
   }
+
   void emailLogOut(){
     AuthServices.authServices.signout();
     GoogleSignInServices.googleSignInServices.emailLogOut();

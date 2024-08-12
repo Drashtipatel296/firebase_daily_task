@@ -8,7 +8,6 @@ class GoogleSignInServices{
   static GoogleSignInServices googleSignInServices = GoogleSignInServices._();
   GoogleSignInServices._();
 
-  AuthController authController = Get.put(AuthController());
 
   GoogleSignIn googleSignIn = GoogleSignIn();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -22,7 +21,7 @@ class GoogleSignInServices{
         idToken: googleSignInAuthentication.idToken,
         accessToken: googleSignInAuthentication.accessToken,
       );
-      firebaseAuth.signInWithCredential(authCredential);
+      await firebaseAuth.signInWithCredential(authCredential);
       return "Success";
     }catch(e){
       log(e.toString());
@@ -37,12 +36,12 @@ class GoogleSignInServices{
 
   User? currentUser(){
     User? user = firebaseAuth.currentUser;
-    if(user != null){
-      print(user.email);
-      print(user.displayName);
-      print(user.phoneNumber);
-      print(user.photoURL);
-    }
+    // if(user != null){
+    //   print(user.email);
+    //   print(user.displayName);
+    //   print(user.phoneNumber);
+    //   print(user.photoURL);
+    // }
     return user;
   }
 }

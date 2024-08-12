@@ -1,8 +1,5 @@
 import 'package:chat/controller/auth_controller.dart';
-import 'package:chat/firebase_services/auth_services.dart';
-import 'package:chat/firebase_services/google_sign_in_services.dart';
 import 'package:chat/view/auth_screen.dart';
-import 'package:chat/view/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -13,23 +10,22 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthController authController = Get.put(AuthController());
-
     return Scaffold(
       drawer: Drawer(
         child: Column(
-          children: [
-            DrawerHeader(
-              child: Obx(
-                () => CircleAvatar(
-                  radius: 70,
-                  backgroundImage: NetworkImage(authController.url.value),
+            children: [
+              DrawerHeader(
+                child: Obx(
+                  () => CircleAvatar(
+                    radius: 70,
+                    backgroundImage: NetworkImage(authController.url.value),
+                  ),
                 ),
               ),
-            ),
-            Obx(() => Text(authController.email.value)),
-            Obx(() => Text(authController.name.value)),
-          ],
-        ),
+              Obx(() => Text(authController.email.value)),
+              Obx(() => Text(authController.name.value)),
+            ],
+          ),
       ),
       appBar: AppBar(
         centerTitle: true,

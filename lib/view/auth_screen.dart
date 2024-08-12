@@ -9,6 +9,9 @@ import 'package:sign_in_button/sign_in_button.dart';
 import '../firebase_services/google_sign_in_services.dart';
 import 'home_screen.dart';
 
+// AuthController authController = Get.put(AuthController());
+
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -102,7 +105,6 @@ class LoginScreen extends StatelessWidget {
                       String status = await GoogleSignInServices.googleSignInServices.signWithGoogle();
                       Fluttertoast.showToast(msg: status);
                       if (status == 'Success') {
-                        controller.getUserDetails();
                         Get.to(const HomeScreen());
                       }
                     }),
