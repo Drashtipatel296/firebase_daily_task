@@ -9,16 +9,12 @@ import '../view/home_screen.dart';
 class AuthController extends GetxController {
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
+  TextEditingController txtName = TextEditingController();
+  TextEditingController txtPhone = TextEditingController();
 
   RxString email = ''.obs;
   RxString name = ''.obs;
   RxString url = ''.obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-      getUserDetails();
-  }
 
   void getUserDetails(){
     User? user = GoogleSignInServices.googleSignInServices.currentUser();
@@ -71,7 +67,6 @@ class AuthController extends GetxController {
       if(user!=null)
       {
         Get.to(const HomeScreen());
-        // getUserDetails();
       }
       else{
         Get.snackbar('Login Failed', 'Incorrect email or password.',

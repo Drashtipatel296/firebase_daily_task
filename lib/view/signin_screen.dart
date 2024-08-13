@@ -1,6 +1,9 @@
 import 'package:chat/controller/auth_controller.dart';
 import 'package:chat/firebase_services/auth_services.dart';
+import 'package:chat/firebase_services/user_services.dart';
+import 'package:chat/model/user_model.dart';
 import 'package:chat/view/signup_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,13 +14,13 @@ import 'home_screen.dart';
 
 // AuthController authController = Get.put(AuthController());
 
-
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     var controller = Get.put(AuthController());
 
     return Container(
@@ -38,7 +41,10 @@ class LoginScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 40, top: 180),
                 child: const Text(
                   'Welcome\nBack',
-                  style: TextStyle(fontSize: 40, color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
@@ -56,7 +62,8 @@ class LoginScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.black, width: 2),
+                          borderSide:
+                              const BorderSide(color: Colors.black, width: 2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
@@ -77,7 +84,8 @@ class LoginScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.black, width: 2),
+                          borderSide:
+                              const BorderSide(color: Colors.black, width: 2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
@@ -103,15 +111,29 @@ class LoginScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 70),
                         Buttons.google, onPressed: () async {
                       String status = await GoogleSignInServices.googleSignInServices.signWithGoogle();
+
+                          User? user = GoogleSignInServices.googleSignInServices.currentUser();
+                          Map m1 = {
+                            'name' : user!.displayName,
+                            'email' : user.email,
+                            'photoUrl' : user.photoURL,
+                          };
+                          UserModel userModel = UserModel.fromMap(m1);
+                          await UserServices.userServices.addUser(userModel);
+
                       Fluttertoast.showToast(msg: status);
                       if (status == 'Success') {
                         Get.to(const HomeScreen());
                       }
+
                     }),
-                    const SizedBox(height: 20,),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     GestureDetector(
                       onTap: () {
-                        controller.signIn(controller.txtEmail.text, controller.txtPassword.text);},
+                        controller.signIn(controller.txtEmail.text, controller.txtPassword.text);
+                      },
                       child: Container(
                         height: 55,
                         width: double.infinity,
@@ -135,9 +157,7 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         const Text(
                           'Don\'t have an account? ',
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey),
+                          style: TextStyle(fontSize: 14, color: Colors.grey),
                         ),
                         GestureDetector(
                           onTap: () {

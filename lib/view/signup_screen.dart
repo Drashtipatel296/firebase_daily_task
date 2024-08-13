@@ -1,6 +1,8 @@
 import 'package:chat/controller/auth_controller.dart';
 import 'package:chat/firebase_services/google_sign_in_services.dart';
-import 'package:chat/view/auth_screen.dart';
+import 'package:chat/firebase_services/user_services.dart';
+import 'package:chat/model/user_model.dart';
+import 'package:chat/view/signin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -44,12 +46,13 @@ class RegisterPage extends StatelessWidget {
               ),
               Container(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height / 3,
+                    top: MediaQuery.of(context).size.height / 3.2,
                     left: 30,
                     right: 30),
                 child: Column(
                   children: [
                     TextField(
+                      controller: controller.txtName,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -62,7 +65,23 @@ class RegisterPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 20,
+                    ),
+                    TextField(
+                      controller: controller.txtPhone,
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        hintText: 'Phone',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                     TextField(
                       decoration: InputDecoration(
@@ -78,7 +97,7 @@ class RegisterPage extends StatelessWidget {
                       controller: controller.txtEmail,
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 20,
                     ),
                     TextField(
                       obscureText: true,
@@ -95,13 +114,14 @@ class RegisterPage extends StatelessWidget {
                       controller: controller.txtPassword,
                     ),
                     const SizedBox(
-                      height: 100,
+                      height: 70,
                     ),
                     SignInButton(
                         padding: const EdgeInsets.symmetric(horizontal: 70),
                         Buttons.google, onPressed: () async {
                       String status = await GoogleSignInServices.googleSignInServices.signWithGoogle();
                       Fluttertoast.showToast(msg: status);
+
                       if (status == 'Success') {
                         Get.to(const HomeScreen());
                         controller.getUserDetails();
@@ -112,8 +132,16 @@ class RegisterPage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.signup(
-                            controller.txtEmail.text, controller.txtPassword.text);
+                        Map m1 = {
+                          'name' : controller.txtName.text,
+                          'email' : controller.txtEmail.text,
+                          'phone' : controller.txtPhone.text,
+                          'photoUrl' : 'https://img.freepik.com/free-photo/brunette-business-woman-with-wavy-long-hair-blue-eyes-stands-holding-notebook-hands_197531-343.jpg',
+                        };
+                        UserModel userModel = UserModel.fromMap(m1);
+                        UserServices.userServices.addUser(userModel);
+                        Get.off(const HomeScreen());
+                        controller.signup(controller.txtEmail.text, controller.txtPassword.text);
                       },
                       child: Container(
                         height: 55,
