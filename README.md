@@ -112,7 +112,6 @@ This structure outlines the core components and flow without delving into specif
 
 ### ScreenShorts
 
-
 <p align='center'>
   <img src='https://github.com/user-attachments/assets/13f46404-4351-4595-97c2-5c995a9c9302' width=240>
   <img src='https://github.com/user-attachments/assets/2ef51dc9-aba0-4d35-bd78-3ed2c24073f4' width=240>
@@ -124,6 +123,106 @@ https://github.com/user-attachments/assets/e0d985de-236c-4d52-8a7d-ff1ffa8a43db
 
 
 ![Screenshot 2024-08-08 144809](https://github.com/user-attachments/assets/266a3880-dc6f-4d08-9c90-2908db6339a5)
+
+
+# Add & Read User in Cloud Firestore
+
+### **Add User Data**
+
+- **To add user data to Firestore, use the following code:**:
+   ```dart
+  import 'package:cloud_firestore/cloud_firestore.dart';
+
+  Future<void> addUser(String userId, String name, String email) async {
+  // Get a reference to the Firestore instance
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // Add user data to Firestore
+  await firestore.collection('users').doc(userId).set({
+    'name': name,
+    'email': email,
+    });
+  }
+  ```
+
+### **Read User Data**
+
+- **To read user data from Firestore, use the following code:**:
+   ```dart
+   import 'package:cloud_firestore/cloud_firestore.dart';
+
+  Future<void> getUser(String userId) async {
+  // Get a reference to the Firestore instance
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // Retrieve user data from Firestore
+  DocumentSnapshot userDoc = await firestore.collection('users').doc(userId).get();
+
+  if (userDoc.exists) {
+    print('User Data: ${userDoc.data()}');
+  } else {
+    print('No user found with the provided ID.');
+    }
+  }
+    ```
+
+### **Example Usage**
+
+- **Here’s how you might use the above functions in a Flutter widget:**:
+   ```dart
+    import 'package:flutter/material.dart';
+
+  class HomeScreen extends StatelessWidget {
+  final String userId = 'user123';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Firestore Example')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                addUser(userId, 'John Doe', 'john.doe@example.com');
+              },
+              child: Text('Add User'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                getUser(userId);
+              },
+              child: Text('Get User'),
+            ),
+          ],
+        ),
+      ),
+    );
+   }
+  }
+  ```
+
+### Video
+
+https://github.com/user-attachments/assets/a0aae946-9624-4b7e-a025-ef5237ee1ed1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
