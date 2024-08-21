@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
+import 'chat_screen.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -73,10 +75,16 @@ class HomeScreen extends StatelessWidget {
                     itemCount: userList.length,
                     itemBuilder: (context, index) {
                       var user = userList[index];
-                      return ListTile(
-                        leading: CircleAvatar(backgroundImage: NetworkImage(user['photoUrl']),),
-                        title: Text(user['name']),
-                        subtitle: Text(user['email']),
+                      return GestureDetector(
+                        onTap: () {
+                          authController.getReceiver(userList[index]['email']);
+                          Get.to(const ChatScreen());
+                        },
+                        child: ListTile(
+                          leading: CircleAvatar(backgroundImage: NetworkImage(user['photoUrl']),),
+                          title: Text(user['name']),
+                          subtitle: Text(user['email']),
+                        ),
                       );
                     },
                   );

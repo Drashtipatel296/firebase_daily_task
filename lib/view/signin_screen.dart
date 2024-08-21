@@ -12,15 +12,12 @@ import 'package:sign_in_button/sign_in_button.dart';
 import '../firebase_services/google_sign_in_services.dart';
 import 'home_screen.dart';
 
-// AuthController authController = Get.put(AuthController());
-
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     var controller = Get.put(AuthController());
 
     return Container(

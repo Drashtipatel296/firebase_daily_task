@@ -11,10 +11,16 @@ class AuthController extends GetxController {
   TextEditingController txtPassword = TextEditingController();
   TextEditingController txtName = TextEditingController();
   TextEditingController txtPhone = TextEditingController();
+  TextEditingController txtMsg = TextEditingController();
 
   RxString email = ''.obs;
   RxString name = ''.obs;
   RxString url = ''.obs;
+  RxString receiverEmail = "".obs;
+
+  void getReceiver(String email){
+    receiverEmail.value = email;
+  }
 
   void getUserDetails(){
     User? user = GoogleSignInServices.googleSignInServices.currentUser();
