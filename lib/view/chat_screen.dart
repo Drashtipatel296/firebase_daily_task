@@ -46,7 +46,12 @@ class ChatScreen extends StatelessWidget {
             TextField(
               controller: controller.txtMsg,
               decoration: InputDecoration(
-                border: const OutlineInputBorder(),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
                 suffixIcon: IconButton(onPressed: () {
                   Map<String, dynamic> chat = {
                     'sender' : GoogleSignInServices.googleSignInServices.currentUser()!.email,
