@@ -18,6 +18,12 @@ class AuthController extends GetxController {
   RxString url = ''.obs;
   RxString receiverEmail = "".obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+    getUserDetails();
+  }
+
   void getReceiver(String email){
     receiverEmail.value = email;
   }
@@ -26,12 +32,8 @@ class AuthController extends GetxController {
     User? user = GoogleSignInServices.googleSignInServices.currentUser();
     if (user != null) {
       email.value = user.email!;
-      url.value = user.photoURL!;
       name.value = user.displayName!;
-      log('-----------------------------------');
-      log(email.value);
-      log(url.value);
-      log(name.value);
+      url.value = user.photoURL!;
     }
   }
 

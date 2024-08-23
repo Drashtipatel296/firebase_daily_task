@@ -1,4 +1,5 @@
 import 'package:chat/controller/auth_controller.dart';
+import 'package:chat/firebase_services/google_sign_in_services.dart';
 import 'package:chat/firebase_services/user_services.dart';
 import 'package:chat/view/signin_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,20 +16,32 @@ class HomeScreen extends StatelessWidget {
     AuthController authController = Get.put(AuthController());
     return Scaffold(
       drawer: Drawer(
-        // child: Column(
-        //   children: [
-        //     DrawerHeader(
-        //       child: Obx(
-        //         () => CircleAvatar(
-        //           radius: 70,
-        //           backgroundImage: NetworkImage(authController.url.value),
-        //         ),
-        //       ),
-        //     ),
-        //     Obx(() => Text(authController.email.value)),
-        //     Obx(() => Text(authController.name.value)),
-        //   ],
-        // ),
+        child: FutureBuilder(
+            future: UserServices.userServices.getCurrentUser(
+                GoogleSignInServices.googleSignInServices.currentUser()!),
+            builder: (context, snapshot) {
+              if(snapshot.hasError){
+                return Text(snapshot.error.toString());
+              }
+
+              if(snapshot.connectionState == ConnectionState.waiting){
+                return const Text('Loading ....');
+              }
+
+              Map<String, dynamic> currentUser = snapshot.data!.data() as Map<String, dynamic>;
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 70),
+                    child: CircleAvatar(radius: 70,backgroundImage: NetworkImage(currentUser['photoUrl']),),
+                  ),
+                  const SizedBox(height: 20,),
+                  Text(currentUser['name'],style: const TextStyle(fontWeight: FontWeight.bold),),
+                  Text(currentUser['email']),
+                  Text(currentUser['phone']),
+                ],
+              );
+            },),
       ),
       appBar: AppBar(
         centerTitle: true,
@@ -62,15 +75,19 @@ class HomeScreen extends StatelessWidget {
                     child: Text('Error: ${snapshot.error}'),
                   );
                 }
-            
+
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
-            
+
                 if (snapshot.hasData) {
-                  List userList = snapshot.data!.docs.map((e) => e.data(),).toList();
+                  List userList = snapshot.data!.docs
+                      .map(
+                        (e) => e.data(),
+                      )
+                      .toList();
                   return ListView.builder(
                     itemCount: userList.length,
                     itemBuilder: (context, index) {
@@ -81,7 +98,9 @@ class HomeScreen extends StatelessWidget {
                           Get.to(const ChatScreen());
                         },
                         child: ListTile(
-                          leading: CircleAvatar(backgroundImage: NetworkImage(user['photoUrl']),),
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(user['photoUrl']),
+                          ),
                           title: Text(user['name']),
                           subtitle: Text(user['email']),
                         ),

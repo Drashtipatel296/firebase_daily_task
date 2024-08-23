@@ -1,3 +1,4 @@
+import 'package:chat/firebase_services/google_sign_in_services.dart';
 import 'package:chat/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,11 +16,11 @@ class UserServices{
 
   Stream<QuerySnapshot<Object?>> getUser(){
     CollectionReference collectionReference = firebaseFirestore.collection("users");
-    return collectionReference.snapshots();
+    return collectionReference.where('email', isNotEqualTo: GoogleSignInServices.googleSignInServices.currentUser()!.email).snapshots();
   }
 
-  DocumentReference<Object?> getCurrentUser(User user){
+  Future<DocumentSnapshot<Object?>> getCurrentUser(User user){
     final CollectionReference collectionReference = firebaseFirestore.collection("users");
-    return collectionReference.doc(user.email);
+    return collectionReference.doc(user.email).get();
   }
 }
