@@ -12,11 +12,13 @@ class AuthController extends GetxController {
   TextEditingController txtName = TextEditingController();
   TextEditingController txtPhone = TextEditingController();
   TextEditingController txtMsg = TextEditingController();
+  TextEditingController txtEditMsg = TextEditingController();
 
   RxString email = ''.obs;
   RxString name = ''.obs;
   RxString url = ''.obs;
   RxString receiverEmail = "".obs;
+  RxString receiverName = "".obs;
 
   @override
   void onInit() {
@@ -24,8 +26,9 @@ class AuthController extends GetxController {
     getUserDetails();
   }
 
-  void getReceiver(String email){
+  void getReceiver(String email, String name){
     receiverEmail.value = email;
+    receiverName.value = name;
   }
 
   void getUserDetails(){
@@ -33,7 +36,6 @@ class AuthController extends GetxController {
     if (user != null) {
       email.value = user.email!;
       name.value = user.displayName!;
-      url.value = user.photoURL!;
     }
   }
 

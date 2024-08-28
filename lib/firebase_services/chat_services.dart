@@ -31,4 +31,20 @@ class ChatServices {
         .orderBy('timestamp', descending: false)
         .snapshots();
   }
+
+  Future<void> editMsg({required String sender, required String receiver, required String chatId, required String msg}) async {
+    List doc = [sender, receiver];
+    doc.sort();
+    String docId = doc.join("-");
+    await FirebaseFirestore.instance.collection("chatroom").doc(docId).collection("chat").doc(chatId).update({
+      'msg' : msg,
+    });
+  }
+
+  Future<void> deleteMsg({required String sender, required String receiver, required String chatId}) async {
+    List doc = [sender, receiver];
+    doc.sort();
+    String docId = doc.join("-");
+    await FirebaseFirestore.instance.collection("chatroom").doc(docId).collection("chat").doc(chatId).delete();
+  }
 }

@@ -94,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                       var user = userList[index];
                       return GestureDetector(
                         onTap: () {
-                          authController.getReceiver(userList[index]['email']);
+                          authController.getReceiver(userList[index]['email'], userList[index]['name']);
                           Get.to(const ChatScreen());
                         },
                         child: ListTile(
