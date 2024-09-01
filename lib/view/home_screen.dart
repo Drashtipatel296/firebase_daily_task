@@ -1,11 +1,11 @@
 import 'package:chat/controller/auth_controller.dart';
 import 'package:chat/firebase_services/google_sign_in_services.dart';
+import 'package:chat/firebase_services/notification_services.dart';
 import 'package:chat/firebase_services/user_services.dart';
 import 'package:chat/view/signin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-
 import 'chat_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -38,7 +38,6 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 20,),
                   Text(currentUser['name'],style: const TextStyle(fontWeight: FontWeight.bold),),
                   Text(currentUser['email']),
-                  Text(currentUser['phone']),
                 ],
               );
             },),
@@ -83,11 +82,7 @@ class HomeScreen extends StatelessWidget {
                 }
 
                 if (snapshot.hasData) {
-                  List userList = snapshot.data!.docs
-                      .map(
-                        (e) => e.data(),
-                      )
-                      .toList();
+                  List userList = snapshot.data!.docs.map((e) => e.data(),).toList();
                   return ListView.builder(
                     itemCount: userList.length,
                     itemBuilder: (context, index) {
@@ -117,6 +112,10 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          NotificationServices.notificationServices.showScheduleNotification();
+      },child: const Icon(Icons.add),),
     );
   }
 }

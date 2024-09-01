@@ -1,4 +1,5 @@
 import 'package:chat/firebase_services/google_sign_in_services.dart';
+import 'package:chat/firebase_services/notification_services.dart';
 import 'package:chat/view/home_screen.dart';
 import 'package:chat/view/signup_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,6 +12,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  NotificationServices.notificationServices.initNotification();
   runApp(const MyApp());
 }
 
