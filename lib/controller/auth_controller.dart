@@ -109,8 +109,7 @@ class AuthController extends GetxController {
         await StorageServices.storageServices.uploadMediaFile(file);
     if (downloadUrl != null) {
       Map<String, dynamic> chat = {
-        'sender':
-            GoogleSignInServices.googleSignInServices.currentUser()!.email,
+        'sender': GoogleSignInServices.googleSignInServices.currentUser()!.email,
         'receiver': receiverEmail.value,
         'msg': 'Sent an image',
         'mediaUrl': downloadUrl,

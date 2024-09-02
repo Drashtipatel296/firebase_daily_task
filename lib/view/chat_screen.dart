@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:chat/controller/auth_controller.dart';
 import 'package:chat/firebase_services/chat_services.dart';
 import 'package:chat/firebase_services/google_sign_in_services.dart';
+import 'package:chat/firebase_services/notification_services.dart';
 import 'package:chat/model/chat_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -181,7 +182,7 @@ class ChatScreen extends StatelessWidget {
                         },
                         icon: const Icon(Icons.photo)),
                     IconButton(
-                      onPressed: () {
+                      onPressed: () async {
                         Map<String, dynamic> chat = {
                           'sender': GoogleSignInServices.googleSignInServices
                               .currentUser()!
@@ -197,6 +198,8 @@ class ChatScreen extends StatelessWidget {
                                 .email!,
                             controller.receiverEmail.value);
                         controller.txtMsg.clear();
+
+                        await NotificationServices.notificationServices.showNotification(1, controller.receiverName.value, chat['msg'] as String);
                       },
                       icon: const Icon(Icons.send),
                     ),

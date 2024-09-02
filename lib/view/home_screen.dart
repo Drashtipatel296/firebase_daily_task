@@ -112,10 +112,6 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          NotificationServices.notificationServices.showScheduleNotification();
-      },child: const Icon(Icons.add),),
     );
   }
 }
