@@ -1,3 +1,4 @@
+import 'package:chat/firebase_services/firebase_msg_services.dart';
 import 'package:chat/firebase_services/google_sign_in_services.dart';
 import 'package:chat/firebase_services/notification_services.dart';
 import 'package:chat/view/home_screen.dart';
@@ -13,6 +14,8 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   NotificationServices.notificationServices.initNotification();
+  await FirebaseMsgServices.firebaseMsgServices.requestPermission();
+  await FirebaseMsgServices.firebaseMsgServices.generateDeviceToken();
   runApp(const MyApp());
 }
 
